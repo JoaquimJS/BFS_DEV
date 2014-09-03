@@ -391,6 +391,15 @@ END SP_DADA_POST_PLAUSI ;
 --------------------------------------------------------- DO_SP_DADA_POST_PLAUSI
 ------------------------------------------------------------------------------*/
 
+/*
+Voici un commentaire ajouté comme test pour GIT
+
+Par exemple : il faudrait adapter le numéro de plausi.
+
+Une deuxième modification.
+
+*/
+
 PROCEDURE 
 DO_SP_DADA_POST_PLAUSI (mp_datenimport_id IN INTEGER
                       , mp_standort_id IN INTEGER) IS
