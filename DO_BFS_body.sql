@@ -391,14 +391,6 @@ END SP_DADA_POST_PLAUSI ;
 --------------------------------------------------------- DO_SP_DADA_POST_PLAUSI
 ------------------------------------------------------------------------------*/
 
-/*
-Voici un commentaire ajouté comme test pour GIT
-
-Par exemple : il faudrait adapter le numéro de plausi.
-
-Une deuxième modification.
-
-*/
 
 PROCEDURE 
 DO_SP_DADA_POST_PLAUSI (mp_datenimport_id IN INTEGER
@@ -530,7 +522,7 @@ END DO_SP_DADA_POST_PLAUSI ;
 
 
 
-PROCEDURE DO_DOSS_TYP (mp_datenimport_id IN INTEGER, mp_standort_id IN INTEGER )
+PROCEDURE DO_DOSS_TYP (mp_datenimport_id IN INTEGER, mp_standort_id IN INTEGER, mp_data_context INTEGER)
 IS
 
     TYPE tbl_chr IS TABLE OF VARCHAR2(4000) ;
