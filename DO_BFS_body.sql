@@ -662,7 +662,7 @@ BEGIN
             IF (l_letzte_zahlung(i) < l_erste_auszahlung(i)) THEN 
                 p_letztbezug := -1 ;
             END IF ;
-            
+            --du texte
             
             ---- Plausi 200060
             IF (l_letzte_zahlung(i) >= to_date('01.07'||l_jahr(i), 'DD.MM.RRRR') AND l_letzte_zahlung(i) < to_date('01.07'||l_jahr(i), 'DD.MM.RRRR')
