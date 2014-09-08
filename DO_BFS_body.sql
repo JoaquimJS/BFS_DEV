@@ -657,35 +657,49 @@ BEGIN
             Si une règle est violée, elle attribue le doss_typ -3 en mettant 
             p_letztbezug à -1.
             ------------------------------------------------------------------*/
+            dbms_output.put_line(extract (year from l_letzte_zahlung(i))); 
             
             IF (l_letzte_zahlung(i) < l_erste_auszahlung(i)) THEN 
                 p_letztbezug := -1 ;
             END IF ;
-              
-            IF (l_letzte_zahlung(i) = to_date('09.01.9999', 'DD.MM.RRRR') AND l_stichtag(i) = 2) THEN
+            
+            
+            ---- Plausi 200060
+            IF (l_letzte_zahlung(i) >= to_date('01.07'||l_jahr(i), 'DD.MM.RRRR') AND l_letzte_zahlung(i) < to_date('01.07'||l_jahr(i), 'DD.MM.RRRR')
+                AND (l_stichtag(i) <> 2 OR extract (year from l_abgeschlossen(i)) = 9999)
+                AND l_letzte_zahlung(i) < l_abgeschlossen(i)
+                AND l_erste_auszahlung(i) <= l_letzte_zahlung(i)) 
+            THEN
                 p_letztbezug := -1 ;
             END IF;
             
-            IF (l_letzte_zahlung(i) <> to_date('09.01.9999', 'DD.MM.RRRR') and l_stichtag(i) = 1) THEN
+          
+            ---- Plausi 200080
+            IF ( l_stichtag(i) = 1 AND l_letzte_zahlung(i) < to_date('01.12.'||l_jahr(i), 'DD.MM.RRRR')
+                AND extract (year FROM l_letzte_zahlung(i)) < 9998 )
+            THEN
                 p_letztbezug := -1 ;
-            END IF; 
-
-            IF (l_aufnahme(i) <> to_date('09.01.9999') 
+            END IF;
+            
+            
+            IF ( extract (year FROM l_aufnahme(i)) < 9998 
                 AND ((l_aufnahme(i) > l_abgeschlossen(i) )
                       OR l_aufnahme(i) > l_letzte_zahlung(i))) THEN
                  p_letztbezug := -1 ;
             END IF;   
             
-            IF (l_abgeschlossen(i) <> to_date('09.01.9999') 
+          
+            IF (extract (year FROM l_abgeschlossen(i)) < 9998 
                     AND ((l_abgeschlossen(i) < ADD_MONTHS(l_erste_auszahlung(i), 6) )
                           OR (l_abgeschlossen(i) < ADD_MONTHS(l_letzte_zahlung(i), 6)))) THEN
                 p_letztbezug := -1 ;
             END IF;  
-
+  
             IF (l_erste_auszahlung(i) < ADD_MONTHS(l_aufnahme(i), -1) 
-                AND l_erste_auszahlung(i) <> to_date('09.01.9999', 'DD.MM.RRRR')) THEN
+                AND extract (year FROM l_erste_auszahlung(i)) < 9998) THEN
                 p_letztbezug := -1 ;
             END IF; 
+              
                   
        END IF ;     
 
