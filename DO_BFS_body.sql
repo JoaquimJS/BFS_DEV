@@ -1,6 +1,6 @@
 create or replace
 PACKAGE BODY "DO_BFS" IS 
-
+/*Je change un truc lÃ  dedans : JoaquimJS, 14h07, 19.09.2014 */
 /*------------------------------------------------------------------------------
 --------------------------------------------------------------- DO_IMP_SP_AHV_NR
 ------------------------------------------------------------------------------*/
@@ -272,7 +272,7 @@ IS
         END ;
         
         
-        /* Pemière boucle à partir de la première requête construite ci-dessus */ 
+        /* PemiÃ¨re boucle Ã  partir de la premiÃ¨re requÃªte construite ci-dessus */ 
    
         FOR i IN 1..lc_plausimeldung_id.COUNT
         LOOP
@@ -297,19 +297,19 @@ IS
                    
           BEGIN
           
-            -- Construction de la requête          
+            -- Construction de la requÃªte          
             -- p_query_struct := 'SELECT COUNT(DISTINCT sh_dossier.sh_dossier_id) FROM '||lc_sql_from(i)||' WHERE '||lc_sql_where(i)||' '||lc_sql_and(i) ;
             
             p_query_struct := 'SELECT DISTINCT sh_dossier.sh_dossier_id FROM '||lc_sql_from(i)||' WHERE '||lc_sql_where(i)||' '||lc_sql_and(i) ;
             
-            -- Remplacement des paramètres
+            -- Remplacement des paramÃ¨tres
             p_query_struct := replace (p_query_struct, ':param1', lc_param1(i)) ;
             p_query_struct := replace (p_query_struct, ':param2', lc_param2(i)) ;
             p_query_struct := replace (p_query_struct, ':param3', lc_param3(i)) ;
 
-            /* Deuxième boucle sur la deuxième requête construite au début */
+            /* DeuxiÃ¨me boucle sur la deuxiÃ¨me requÃªte construite au dÃ©but */
             
-            -- Si la requête n'est pas vide, fait tourner la boucle
+            -- Si la requÃªte n'est pas vide, fait tourner la boucle
             IF (lc_datenimport_id.COUNT > 0) THEN
             
                 FOR j IN 1..lc_datenimport_id.COUNT
@@ -335,7 +335,7 @@ IS
                         p_query_exec := p_query_exec ||' AND sh_dossier.soz_traeger_datenimport_id = '||lc_datenimport_id(j);
                     END IF;
                     
-                    -- On doit également limiter la sélection au niveau des filtres de prestation.
+                    -- On doit Ã©galement limiter la sÃ©lection au niveau des filtres de prestation.
                     p_query_exec := p_query_exec || ' AND  dossier_status_id <> 5 AND sh_dossier.sh_leistungstyp_id IN  (SELECT sh_leistungstyp_id FROM v_sh_leistungstyp 
                                     WHERE sh_leistungsfilter_id IN ('|| lc_leistungsfilter(i) ||'))' ;
                   
@@ -358,7 +358,7 @@ IS
                         END LOOP;
                       
                       EXCEPTION WHEN OTHERS THEN
-                        --dbms_output.put_line('Erreur récupération des dossiers : '||sqlerrm||' / query : '|| p_query_exec);
+                        --dbms_output.put_line('Erreur rÃ©cupÃ©ration des dossiers : '||sqlerrm||' / query : '|| p_query_exec);
                         RAISE;
                    
                       END ;      
@@ -378,7 +378,7 @@ IS
                 l_err_code := sqlcode ;
                 INSERT INTO dbg_test_bfs_dada (id, sql, rem, standort_id, datenimport_id, plausi_id ) values (-1 , p_query_exec, l_err_code, mp_standort_id, mp_datenimport_id, mp_plausi_id ) ;
                 IF (l_err_code = -1013) THEN 
-                    RAISE ; -- arrêter l'exécution
+                    RAISE ; -- arrÃªter l'exÃ©cution
                 ELSE 
                     NULL;
                 END IF;
@@ -394,13 +394,13 @@ END SP_DADA_POST_PLAUSI ;
 <<<<<<< HEAD
 =======
 /*
-Voici un commentaire ajouté comme test pour GIT
+Voici un commentaire ajoutÃ© comme test pour GIT
 
-Par exemple : il faudrait adapter le numéro de plausi.
+Par exemple : il faudrait adapter le numÃ©ro de plausi.
 
-Une deuxième modification.
+Une deuxiÃ¨me modification.
 
-Une troisième modification par un autre utilisateur (JoaquimJS)
+Une troisiÃ¨me modification par un autre utilisateur (JoaquimJS)
 
 */
 >>>>>>> master
@@ -605,7 +605,7 @@ BEGIN
         p_letztbezug := -1 ;
         p_doss_typ := -3 ;
        
-        -- Critère de base : il FAUT une date de premier versement.
+        -- CritÃ¨re de base : il FAUT une date de premier versement.
         IF ( l_erste_auszahlung(i) IS NOT NULL 
             AND l_letzte_zahlung(i) IS NOT NULL
             AND extract (year FROM l_erste_auszahlung(i)) < 9998) 
@@ -629,8 +629,8 @@ BEGIN
             /* --- Calcul du "Letztbezug" ----------------------------------------
                0  : Dernier versement avant juillet de la PE-1 (dossier clos)
                1  : Dernier versement avant juillet de la PE (dossier en cours)
-               2  : Dernier versement après juin de la PE (dossier non pris en compte)
-               10 : Dernier versement après juin PE-1 (dossier clos)
+               2  : Dernier versement aprÃ¨s juin de la PE (dossier non pris en compte)
+               10 : Dernier versement aprÃ¨s juin PE-1 (dossier clos)
                -1 : code d'erreur, attribution du doss_typ -3
             ------------------------------------------------------------------*/
             IF (l_letzte_zahlung(i) < TO_DATE('01.07'||p_prev_ep, 'DD.MM.RRRR')) THEN
@@ -651,11 +651,11 @@ BEGIN
             
 
             /*------------------------------------------------------------------ 
-            Règles de contrôles supplémentaires par rapport au concept de base
+            RÃ¨gles de contrÃ´les supplÃ©mentaires par rapport au concept de base
             
-            Volontairement individualisées (ajout/suppression plus aisés)
-            Si une règle est violée, elle attribue le doss_typ -3 en mettant 
-            p_letztbezug à -1.
+            Volontairement individualisÃ©es (ajout/suppression plus aisÃ©s)
+            Si une rÃ¨gle est violÃ©e, elle attribue le doss_typ -3 en mettant 
+            p_letztbezug Ã  -1.
             ------------------------------------------------------------------*/
             dbms_output.put_line(extract (year from l_letzte_zahlung(i))); 
             
@@ -704,7 +704,7 @@ BEGIN
        END IF ;     
 
        /* ----------------------------------------------------------------------
-          Calcul du type de dossier en fonction des deux variables synthétiques
+          Calcul du type de dossier en fonction des deux variables synthÃ©tiques
           Letztbezug et Neubezug.
           ------------------------------------------------------------------- */
        IF (p_neubezug >= 0 and p_letztbezug >= 0) THEN 
@@ -804,7 +804,7 @@ BEGIN
             */
            
             
-            --- Transcription littérale des contrôles du module 5A
+            --- Transcription littÃ©rale des contrÃ´les du module 5A
             
             --- "S1"
             IF (l_var_albv_1(i) = to_date ('04.01.9999', 'DD.MM.RRRR') 
@@ -897,7 +897,7 @@ BEGIN
               l_var_albv_2(i) := 2 ;
             END IF ;
 
-            --- Préaparation pour le calcul max/min
+            --- PrÃ©aparation pour le calcul max/min
             IF (l_var_albv_1(i) = to_date ('03.01.9999', 'DD.MM.RRRR'))
             THEN
               l_var_albv_1(i) := null;
